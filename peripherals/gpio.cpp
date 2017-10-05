@@ -131,19 +131,19 @@ GPIO_HANDLER::GPIO_HANDLER(GPIO_PIN * pins, uint8_t numberOfPins) : my_pins(pins
    // initialization code
 }
 
-bool GPIO_HANDLER::writePin(GPIO_PIN pin, bool value)
+bool GPIO_HANDLER::writePin(GPIO_PIN pin, PIN_STATE value)
 {
    auto writeSuccess(false);
 
-   writeSuccess = writeOperation[static_cast<uint8_t>(pin)](value);
+   writeSuccess = writeOperation[static_cast<uint8_t>(pin)](static_cast<bool>(value));
 
    return writeSuccess;
 }
 
 
-bool GPIO_HANDLER::readPin(GPIO_PIN pin)
+GPIO_HANDLER::PIN_STATE GPIO_HANDLER::readPin(GPIO_PIN pin)
 {
-   return readOperation[static_cast<uint8_t>(pin)]();
+   return static_cast<PIN_STATE>(readOperation[static_cast<uint8_t>(pin)]());
 }
 
 

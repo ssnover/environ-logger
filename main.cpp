@@ -5,31 +5,23 @@
  * for the system tick.
  */
 
-#include "adc.h"
-#include "button-engine.h"
-#include "environ-logger.h"
+#include <stdint.h>
 #include "gpio.h"
-#include "timer.h"
-#include "uart.h"
 
-void main(void)
+const uint8_t numberOfPins = 2;
+GPIO_HANDLER::GPIO_PIN myPins[numberOfPins] = {GPIO_HANDLER::GPIO_PIN::PIN_B0, GPIO_HANDLER::GPIO_PIN::PIN_B1};
+GPIO_HANDLER my_gpio_handler(myPins, numberOfPins);
+
+void main()
 {
-    // initialize
-    // gpio
-    startGPIOHandler();
-    // uart
-    startUART();
-    // adc
-    initializeADC();
-    // timer
-    startTimer();
+   my_gpio_handler.setPinDirection(GPIO_HANDLER::GPIO_PIN::PIN_B0, GPIO_HANDLER::DIRECTION::INPUT);
+   my_gpio_handler.setPinDirection(GPIO_HANDLER::GPIO_PIN::PIN_B1, GPIO_HANDLER::DIRECTION::OUTPUT);
 
-    ENVIRONMENT_LOGGER * myLogger = &ENVIRONMENT_LOGGER();
-
-    while (1)
-    {
-        // loop forever
-        myLogger->runApplication();
-        waitForSystick();
-    }
+   while (true)
+   {
+      // check the button state
+      GPIO_HANDLER::PIN_STATE state(my_gpio_handler.readPin(GPIO_HANDLER::GPIO_PIN::PIN_B0));
+      // reflect the button state in the LED state
+      my_gpio_handler.writePin(GPIO_HANDLER::GPIO_PIN::PIN_B1, state);
+   }
 }

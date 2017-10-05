@@ -4,8 +4,16 @@
  * This file defines an interface to the gpio periperhal of the Atmega AVR.
  */
 
+
 class GPIO_HANDLER
 {
+public:
+
+   // forward declaration
+   enum class GPIO_PIN;
+   enum class DIRECTION;
+   enum class PIN_STATE;
+
 private:
 
    GPIO_PIN * my_pins;
@@ -50,13 +58,19 @@ public:
       OUTPUT = 1u,
    };
 
+   enum class PIN_STATE
+   {
+      LOW   = 0u,
+      HIGH  = 1u,
+   };
+
    GPIO_HANDLER(GPIO_PIN * pins, uint8_t numberOfPins);
 
    ~GPIO_HANDLER() = default;
 
-   bool writePin(GPIO_PIN pin, bool value);
+   bool writePin(GPIO_PIN pin, PIN_STATE value);
 
-   bool readPin(GPIO_PIN pin);
+   PIN_STATE readPin(GPIO_PIN pin);
 
    bool setPinDirection(GPIO_PIN pin, DIRECTION direction);
 };

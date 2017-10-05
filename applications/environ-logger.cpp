@@ -4,8 +4,8 @@
 
 #include "environ-logger.h"
 #include "hd44780.h"
-#include "humidity-sensor.h"
-#include "temperature-sensor.h"
+#include "rht03.h"
+#include "tmp36.h"
 #include "xbee.h"
 
 namespace
@@ -15,8 +15,8 @@ constexpr uint8_t SYSTICK_PERIOD(10);
 
 ENVIRONMENT_LOGGER::ENVIRONMENT_LOGGER() :
    my_tick(0),
-   my_humidity_sensor(HUMIDITY_SENSOR()),
-   my_temp_sensor(TEMPERATURE_SENSOR()),
+   my_humidity_sensor(RHT03()),
+   my_temp_sensor(TMP36()),
    my_serial_connection(XBEE()),
    my_lcd(HD44780())
 {
